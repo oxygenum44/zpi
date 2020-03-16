@@ -57,8 +57,7 @@ def bag_of_words(tweets_list):
     for tweet in tweets_list:
         bag_of_words = np.zeros(shape=len(all_words))
         for i in range(len(all_words)):
-            if all_words[i] in tweet:
-                bag_of_words[i] = 1
+            bag_of_words[i] += tweet.count(all_words[i])
         tweets_bags.append(bag_of_words.copy())
 
     return tweets_bags
