@@ -1,6 +1,5 @@
 from nltk.tokenize import TweetTokenizer
 import nltk as nl
-import math
 tweet_tokenizer = TweetTokenizer()
 tweet_tokens = []
 

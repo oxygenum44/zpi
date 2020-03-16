@@ -25,8 +25,10 @@ def euclidean_distance(bag_of_words1, bag_of_words2):
 
     return squared_subs_sum**(1.0/float(root_range))
 
+
 def cosine_similarity(sentence1, sentence2):
     return np.dot(sentence1, sentence2) / (np.sqrt(np.dot(sentence1, sentence1)) * np.sqrt(np.dot(sentence2, sentence2)))
+
 
 def bag_of_words(tweets_list):
     all_words_set = set()
