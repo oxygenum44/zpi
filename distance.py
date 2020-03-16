@@ -1,6 +1,18 @@
 import numpy as np
 
-def jaccard_distance(sentence1, sentence2):
+
+def jaccard_distance(bag_of_words1, bag_of_words2):
+    sentence1 = set()
+    sentence2 = set()
+
+    for i in range(0, len(bag_of_words1)):
+        if bag_of_words1[i] != 0:
+            sentence1.add(str(i))
+
+    for i in range(0, len(bag_of_words2)):
+        if bag_of_words2[i] != 0:
+            sentence2.add(str(i))
+
     sentences_sum_set = set()
     sentences_common_set = set()
     for word in sentence1:
@@ -13,11 +25,11 @@ def jaccard_distance(sentence1, sentence2):
             if word1 == word2:
                 sentences_common_set.add(word1)
 
-    return len(sentences_common_set)/len(sentences_sum_set)
+    return len(sentences_common_set) / len(sentences_sum_set)
+
 
 def euclidean_distance(bag_of_words1, bag_of_words2):
     root_range = len(bag_of_words1)
-
     squared_subs_sum = 0
     subtraction_list = bag_of_words1 - bag_of_words2
     for i in range(0, root_range):
@@ -26,8 +38,9 @@ def euclidean_distance(bag_of_words1, bag_of_words2):
     return squared_subs_sum**(1.0/float(root_range))
 
 
-def cosine_similarity(sentence1, sentence2):
-    return np.dot(sentence1, sentence2) / (np.sqrt(np.dot(sentence1, sentence1)) * np.sqrt(np.dot(sentence2, sentence2)))
+def cosine_similarity(bag_of_words1, bag_of_words2):
+    denominator = (np.sqrt(np.dot(bag_of_words1, bag_of_words2)) * np.sqrt(np.dot(bag_of_words2, bag_of_words2)))
+    return np.dot(bag_of_words1, bag_of_words2) / denominator
 
 
 def bag_of_words(tweets_list):
