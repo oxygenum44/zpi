@@ -1,8 +1,32 @@
 import numpy as np
 
+
 def jaccard_distance(bag_of_words1, bag_of_words2):
-    summed_bag_of_words = list(bag_of_words1+bag_of_words2)
-    return summed_bag_of_words.count(2)/(len(summed_bag_of_words)-summed_bag_of_words.count(0))
+    sentence1 = set()
+    sentence2 = set()
+
+    for i in range(0, len(bag_of_words1)):
+        if bag_of_words1[i] != 0:
+            sentence1.add(str(i))
+
+    for i in range(0, len(bag_of_words2)):
+        if bag_of_words2[i] != 0:
+            sentence2.add(str(i))
+
+    sentences_sum_set = set()
+    sentences_common_set = set()
+    for word in sentence1:
+        sentences_sum_set.add(word)
+    for word in sentence2:
+        sentences_sum_set.add(word)
+
+    for word1 in sentence1:
+        for word2 in sentence2:
+            if word1 == word2:
+                sentences_common_set.add(word1)
+
+    return len(sentences_common_set) / len(sentences_sum_set)
+
 
 def euclidean_distance(bag_of_words1, bag_of_words2):
     root_range = len(bag_of_words1)
