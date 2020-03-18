@@ -60,3 +60,11 @@ def bag_of_words(tweets_list):
         tweets_bags.append(bag_of_words.copy())
 
     return tweets_bags
+
+def dist(bag_of_words1, bag_of_words2, type):
+    if type == 'jaccard':
+        return jaccard_distance(bag_of_words1, bag_of_words2)
+    elif type == 'euclidean':
+        return euclidean_distance(bag_of_words1, bag_of_words2)
+    elif type == 'cosine':
+        return cosine_similarity(bag_of_words1, bag_of_words2)
