@@ -63,8 +63,12 @@ print(distance.cosine_similarity(bag_of_words[0], bag_of_words[1]))
 
 
 print()
+print(nowynowy)
 print("Demnostracja tf_idf")
 print(calculate_tf_idf(sent=nowynowy[0], corpus=nowynowy))
+
+print("Demnostracja BoW")
+print(distance.bow(tweet=nowynowy[0]))
 
 
 
@@ -95,6 +99,21 @@ for i, w1 in enumerate(bag):
         print('Dystans do tweeta', j)
         print(distance.euclidean_distance(w1, w2))
     print('\n')
+
+print("Centroidy")
+print('----------')
+
+for i, tweet in enumerate(tweety):
+    for centroid in centroids:
+        if np.array_equal(bag[i], centroid):
+            print(tweet)
+
+print()
+print()
+print('------------RANDOM CLUSTERING-----------')
+
+clustering = models.TweetsRandomClustering(np.asarray(bag), 2)
+centroids = clustering.run_random()
 
 print("Centroidy")
 print('----------')

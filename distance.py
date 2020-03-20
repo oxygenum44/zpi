@@ -27,7 +27,6 @@ def jaccard_distance(bag_of_words1, bag_of_words2):
 
     return 1-(len(sentences_common_set) / len(sentences_sum_set))
 
-
 def euclidean_distance(bag_of_words1, bag_of_words2):
     root_range = len(bag_of_words1)
     squared_subs_sum = 0
@@ -41,6 +40,17 @@ def euclidean_distance(bag_of_words1, bag_of_words2):
 def cosine_similarity(bag_of_words1, bag_of_words2):
     denominator = np.dot(bag_of_words1, bag_of_words2)
     return 1-(np.sqrt(np.dot(bag_of_words1, bag_of_words2)) * np.sqrt(np.dot(bag_of_words2, bag_of_words2))) / denominator
+
+def bow(tweet):
+    all_words = list()
+    for word in tweet:
+        all_words.append(word)
+
+    bow = {}
+    for word in all_words:
+        bow.update({word: tweet.count(word)})
+
+    return bow
 
 def bag_of_words(tweets_list):
     all_words_set = set()

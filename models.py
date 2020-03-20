@@ -50,3 +50,18 @@ class TweetsKMeans:
         rand_centr_idx = np.random.permutation(self.m)
         centroids = self.data[rand_centr_idx]
         return centroids
+
+class TweetsRandomClustering:
+    # m - number of training examples
+    # k - number of clusters
+    def __init__(self, bags_array, k):
+        self.data = bags_array
+        self.m, self.n = bags_array.shape
+        self.k = k
+
+    def run_random(self):
+        random_sorted_tweets = self.data[np.random.permutation(self.m)]
+        centroids = []
+        for i in range(self.k):
+            centroids.append(random_sorted_tweets[i])
+        return centroids
