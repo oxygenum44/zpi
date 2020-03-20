@@ -85,6 +85,20 @@ def calculate_tf_idf(sent, corpus):
         tf_idf[word] = tf*idf
     return tf_idf
 
+def list_of_all_words_base(corpus):
+    lista = set()
+    for tweet in corpus:
+        for word in tweet:
+            lista.add(word)
+    return lista
+
+def vector_maker(feature_dict, all_word_list):
+    vector = []
+    for word in all_word_list:
+        wart = feature_dict[word] if word in feature_dict else 0
+        vector.append(wart)
+    return vector
+
 
 
 

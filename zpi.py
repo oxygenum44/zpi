@@ -1,6 +1,6 @@
 import distance
 from tweet_cleaner import *
-from features import calculate_tf_idf
+from features import *
 import numpy as np
 import models
 tweet_tokenizer = TweetTokenizer()
@@ -122,3 +122,15 @@ for i, tweet in enumerate(tweety):
     for centroid in centroids:
         if np.array_equal(bag[i], centroid):
             print(tweet)
+
+
+print("Wszystkie slowa ever w corpusie")
+
+lista_slow = list_of_all_words_base(tweety)
+print(lista_slow)
+
+print("Zmiana slownika na feature")
+print(calculate_tf_idf(tweet1, tweety))
+wektor_feature = vector_maker(calculate_tf_idf(tweet1, tweety), lista_slow)
+print(wektor_feature)
+
