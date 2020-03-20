@@ -25,7 +25,7 @@ def jaccard_distance(bag_of_words1, bag_of_words2):
             if word1 == word2:
                 sentences_common_set.add(word1)
 
-    return len(sentences_common_set) / len(sentences_sum_set)
+    return 1-(len(sentences_common_set) / len(sentences_sum_set))
 
 
 def euclidean_distance(bag_of_words1, bag_of_words2):
@@ -39,9 +39,8 @@ def euclidean_distance(bag_of_words1, bag_of_words2):
 
 
 def cosine_similarity(bag_of_words1, bag_of_words2):
-    denominator = (np.sqrt(np.dot(bag_of_words1, bag_of_words2)) * np.sqrt(np.dot(bag_of_words2, bag_of_words2)))
-    return np.dot(bag_of_words1, bag_of_words2) / denominator
-
+    denominator = np.dot(bag_of_words1, bag_of_words2)
+    return 1-(np.sqrt(np.dot(bag_of_words1, bag_of_words2)) * np.sqrt(np.dot(bag_of_words2, bag_of_words2))) / denominator
 
 def bag_of_words(tweets_list):
     all_words_set = set()
@@ -61,3 +60,11 @@ def bag_of_words(tweets_list):
         tweets_bags.append(bag_of_words.copy())
 
     return tweets_bags
+
+def dist(bag_of_words1, bag_of_words2, type):
+    if type == 'jaccard':
+        return jaccard_distance(bag_of_words1, bag_of_words2)
+    elif type == 'euclidean':
+        return euclidean_distance(bag_of_words1, bag_of_words2)
+    elif type == 'cosine':
+        return cosine_similarity(bag_of_words1, bag_of_words2)

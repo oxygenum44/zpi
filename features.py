@@ -1,16 +1,5 @@
 from tweet_cleaner import tweet_obrabiarka
 import math
-
-text1 = 'Poland :) goes little small good time times'
-text2 = 'Poland go battle small good pretime times'
-text3 = 'Poland go battle small good pretime times !!!!'
-text4 = 'Sweden was good small crab two times/22 :P'
-
-texts = [text1, text2, text3, text4]
-nowynowy = []
-for itr in texts:
-    nowynowy.append(tweet_obrabiarka(itr, hashowac=0, stemmer=1))
-
 #Przyjmuje caly tekst jako string
 def _term_count_in_sentence_raw(sent):
     sent = tweet_obrabiarka(sent, hashowac=0, stemmer=1)
@@ -56,20 +45,13 @@ def _term_count_in_corpus(sentences):
     dictionary = _term_count_in_corpus_raw(nowy)
     return dictionary
 
-
-dict_txt1 = _term_count_in_sentence_raw(text1)
-dict_corpus = _term_count_in_corpus_raw(texts)
-dict_txt1.update(dict_corpus)
-print(dict_txt1)
-
 def calculate_tf(sentence):
-    tf_list = []
+    tf_list = {}
     count_dict = _term_count_in_sentence(sentence)
     for word in sentence:
-        tf_list.append(count_dict[word] / len(sentence))
+        tf_list[word] = (count_dict[word] / len(sentence))
     return tf_list
 
-print(calculate_tf(nowynowy[0]))
 
 
 def ile_zawiera(szukana, korpus):
@@ -77,18 +59,33 @@ def ile_zawiera(szukana, korpus):
     for document in korpus:
         stan = 0
         for word in document:
+            word = word
             if word == szukana:
                 stan = 1
         if stan == 1:
             licznik = licznik + 1
-    return licznik
+    #Żeby uniknąć dzielenia przez 0
+    return licznik + 1
+
+def number_of_sentence_in_document(corpus):
+    return len(corpus)
 
 
-def calculate_idf(sentence, korpus):
-    idf_list = []
-    licznosc_korpusu = len(korpus)
-    for word in sentence:
-        idf_list.append(math.log(licznosc_korpusu / ile_zawiera(word, korpus)))
+def calculate_idf(cutted_sentence, corpus):
+    idf_list = {}
+    for word in cutted_sentence:
+        idf_list[word] = (math.log(number_of_sentence_in_document(corpus) / ile_zawiera(word, corpus)))
     return idf_list
+
+def calculate_tf_idf(sent, corpus):
+    tf_idf = {}
+    for word in sent:
+        tf = calculate_tf(sentence=sent)[word]
+        idf = calculate_idf(cutted_sentence=sent, corpus=corpus)[word]
+        tf_idf[word] = tf*idf
+    return tf_idf
+
+
+
 
 
