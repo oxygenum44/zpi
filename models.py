@@ -5,9 +5,9 @@ import math
 class TweetsKMeans:
     # m - number of training examples
     # k - number of clusters
-    def __init__(self, bags_array, k):
-        self.data = bags_array
-        self.m, self.n = bags_array.shape
+    def __init__(self, tweets_array, k):
+        self.data = tweets_array
+        self.m, self.n = tweets_array.shape
         self.k = k
 
     def run_k_means(self, iters, type_dist='jaccard'):
@@ -15,7 +15,11 @@ class TweetsKMeans:
         for i in range(0, iters):
             closest_centroids = self.closest_centroids(centroids, type_dist.lower())
             centroids = self.compute_centroids(closest_centroids, type_dist)
-        return centroids
+
+        closest_centroids = self.closest_centroids(centroids, type_dist.lower())
+        for c in closest_centroids:
+            pass
+
 
     # computing closest centroid (medoid) for each tweet
     def closest_centroids(self, centroids, type_dist):
@@ -50,6 +54,7 @@ class TweetsKMeans:
         rand_centr_idx = np.random.permutation(self.m)
         centroids = self.data[rand_centr_idx]
         return centroids
+
 
 class TweetsRandomClustering:
     # m - number of training examples
