@@ -1,5 +1,6 @@
 from tweet_cleaner import tweet_obrabiarka
 import math
+import numpy as np
 #Przyjmuje caly tekst jako string
 def _term_count_in_sentence_raw(sent):
     sent = tweet_obrabiarka(sent, hashowac=0, stemmer=1)
@@ -97,7 +98,7 @@ def vector_maker(feature_dict, all_word_list):
     for word in all_word_list:
         wart = feature_dict[word] if word in feature_dict else 0
         vector.append(wart)
-    return vector
+    return np.array(vector)
 
 def tf_idf_feutures_from_corpus(corpus):
     list_of_features = []
@@ -105,7 +106,7 @@ def tf_idf_feutures_from_corpus(corpus):
     for tweet in corpus:
         tf_idf = calculate_tf_idf(tweet, corpus)
         list_of_features.append(vector_maker(tf_idf, list_of_all_words))
-    return list_of_features
+    return np.array(list_of_features)
 
 
 
