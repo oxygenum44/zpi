@@ -141,5 +141,5 @@ print(features._term_count_in_sentence(tweet1))
 
 print("Dla bartka")
 print(bag)
-print(tf_idf_feutures_from_corpus(tweety))
+#print(tf_idf_feutures_from_corpus(tweety))
 
