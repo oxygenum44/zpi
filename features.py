@@ -99,6 +99,15 @@ def vector_maker(feature_dict, all_word_list):
         vector.append(wart)
     return vector
 
+def tf_idf_feutures_from_corpus(corpus):
+    list_of_features = []
+    list_of_all_words = list_of_all_words_base(corpus)
+    for tweet in corpus:
+        tf_idf = calculate_tf_idf(tweet, corpus)
+        list_of_features.append(vector_maker(tf_idf, list_of_all_words))
+    return list_of_features
+
+
 
 
 
