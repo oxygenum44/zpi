@@ -37,13 +37,13 @@ def euclidean_distance(bag_of_words_array1, bag_of_words_array2):
     return squared_subs_sum**(1.0/float(root_range))
 
 
-def cosine_similarity(bag_of_words_array1, bag_of_words_array2):
+def cosine_distance(bag_of_words_array1, bag_of_words_array2):
     bow_np_arr1 = np.array(bag_of_words_array1)
     bow_np_arr2 = np.array(bag_of_words_array2)
     dot = np.dot(bow_np_arr1, bow_np_arr2)
-    norma = np.linalg.norm(bow_np_arr1)
-    normb = np.linalg.norm(bow_np_arr2)
-    cos = dot / (norma * normb)
+    norm1 = np.linalg.norm(bow_np_arr1)
+    norm2 = np.linalg.norm(bow_np_arr2)
+    cos = dot / (norm1 * norm2)
     return 1-cos
 
 def bow(tweet):
