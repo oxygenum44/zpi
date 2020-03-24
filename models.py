@@ -6,6 +6,7 @@ class TweetsKMeans:
     # m - number of training examples
     # k - number of clusters
     def __init__(self, tweets_array, k):
+        self.tweets = tweets_array
         self.data = tweets_array
         self.m, self.n = tweets_array.shape
         self.k = k
@@ -17,10 +18,8 @@ class TweetsKMeans:
             centroids = self.compute_centroids(closest_centroids, type_dist)
 
         closest_centroids = self.closest_centroids(centroids, type_dist.lower())
-        for c in closest_centroids:
-            pass
 
-
+    
     # computing closest centroid (medoid) for each tweet
     def closest_centroids(self, centroids, type_dist):
         assigned_centroids = np.zeros((self.m, 1))

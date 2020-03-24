@@ -1,4 +1,5 @@
 import distance
+import features
 from tweet_cleaner import *
 from features import *
 import numpy as np
@@ -131,3 +132,12 @@ print("Zmiana slownika na feature")
 print(calculate_tf_idf(tweet1, tweety))
 wektor_feature = vector_maker(calculate_tf_idf(tweet1, tweety), lista_slow)
 print(wektor_feature)
+
+
+
+print(distance.bow(tweet1))
+print(features._term_count_in_sentence(tweet1))
+
+print("Dla bartka")
+print(bag)
+print(tf_idf_feutures_from_corpus(tweety))
