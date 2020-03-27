@@ -53,18 +53,20 @@ print("DYSTANS MIĘDZY TWEETAMI 1 I 2")
 print()
 bag_of_words = distance.bag_of_words(z_stemmerem)
 print(bag_of_words)
-print("Tweet 1: " + str(z_stemmerem[0]) + ", BoW: " + str(bag_of_words[0]))
+
+print("Tweet 1: " + str(z_stemmerem[3]) + ", BoW: " + str(bag_of_words[3]))
+
 print()
 print("Tweet 2: " + str(z_stemmerem[1]) + ", BoW: " + str(bag_of_words[1]))
 print()
 print("DYSTANS JACCARDA")
-print(distance.jaccard_distance(bag_of_words[0], bag_of_words[1]))
+print(distance.jaccard_distance(bag_of_words[3], bag_of_words[1]))
 print()
 print("DYSTANS EUKLIDESA")
-print(distance.euclidean_distance(bag_of_words[0], bag_of_words[1]))
+print(distance.euclidean_distance(bag_of_words[3], bag_of_words[1]))
 print()
 print("DYSTANS COSINE")
-print(distance.cosine_similarity(bag_of_words[0], bag_of_words[1]))
+print(distance.cosine_distance(bag_of_words[3], bag_of_words[1]))
 
 print()
 print(nowynowy)
@@ -88,40 +90,6 @@ tweet9 = ['china', 'china', 'china', 'madrid', 'ronaldo', 'football', 'football'
 tweet10 = ['china', 'china', 'china', 'china', 'china', 'poland', 'poland']
 
 tweety = [tweet1, tweet2, tweet3, tweet4, tweet5, tweet6, tweet7, tweet8, tweet9, tweet10]
-bag = distance.bag_of_words(tweety)
-clustering = models.TweetsKMeans(np.asarray(bag), 2)
-centroids = clustering.run_k_means(3, 'euclidean')
-
-for i, w1 in enumerate(bag):
-    print('Tweet', i)
-    print('-----------')
-    for j, w2 in enumerate(bag):
-        print('Dystans do tweeta', j)
-        print(distance.euclidean_distance(w1, w2))
-    print('\n')
-
-print("Centroidy")
-print('----------')
-
-for i, tweet in enumerate(tweety):
-    for centroid in centroids:
-        if np.array_equal(bag[i], centroid):
-            print(tweet)
-
-print()
-print()
-print('------------RANDOM CLUSTERING-----------')
-
-clustering = models.TweetsRandomClustering(np.asarray(bag), 2)
-centroids = clustering.run_random()
-
-print("Centroidy")
-print('----------')
-
-for i, tweet in enumerate(tweety):
-    for centroid in centroids:
-        if np.array_equal(bag[i], centroid):
-            print(tweet)
 
 print("Wszystkie slowa ever w corpusie")
 
@@ -133,11 +101,32 @@ print(calculate_tf_idf(tweet1, tweety))
 wektor_feature = vector_maker(calculate_tf_idf(tweet1, tweety), lista_slow)
 print(wektor_feature)
 
-
-
 print(distance.bow(tweet1))
 print(features._term_count_in_sentence(tweet1))
 
 print("Dla bartka")
-print(bag)
-print(tf_idf_feutures_from_corpus(tweety))
+
+clustering = models.TweetsKMeans(tweety, 2, 'tf_idf')
+centroids, assigned = clustering.run_k_means(5, 'euclidean')
+
+print(tweety)
+print("centroidy")
+print(centroids)
+print("przypisane")
+print(assigned)
+print(
+    "---Poprawnie jest jak przydzieliło po połowie jedynek i po połowie zer, w związku z losowym rozmieszczeniem centroidów, nie zawsze to sie udaje---")
+
+print('Tweety w klastrach')
+
+text_clusters = models.group_tweets(tweety, assigned, 2)
+
+for i in range(len(text_clusters)):
+    print('KLASTER ' + str(i))
+    for j in range(len(text_clusters[i])):
+        print(text_clusters[i][j])
+
+# random dziala ale i tak go nie uzywamy wiec niech sobie siedzi w komentarzu
+# random_clustering = models.TweetsRandomClustering(tweety, 2, 'tf_idf')
+# centroids_random, assigned_random = random_clustering.run_random_clustering(5, 'euclidean')
+# print(assigned_random)

@@ -110,10 +110,13 @@ def vector_maker(feature_dict, all_word_list):
     return np.array(vector)
 
 
-def tf_idf_feutures_from_corpus(corpus):
+def features_from_corpus(corpus, method):
     list_of_features = []
     list_of_all_words = list_of_all_words_base(corpus)
     for tweet in corpus:
-        tf_idf = calculate_tf_idf(tweet, corpus)
-        list_of_features.append(vector_maker(tf_idf, list_of_all_words))
+        if method == 'tf_idf':
+            dict = calculate_tf_idf(tweet, corpus)
+        if method == 'bag_of_word':
+            dict = _term_count_in_sentence(tweet, corpus)
+        list_of_features.append(vector_maker(dict, list_of_all_words))
     return np.array(list_of_features)
