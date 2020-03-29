@@ -1,9 +1,11 @@
 import distance
 import features
+import twitterAPI
 from tweet_cleaner import *
 from features import *
 import numpy as np
 import models
+import naming
 
 tweet_tokenizer = TweetTokenizer()
 tweet_tokens = []
@@ -117,12 +119,17 @@ print(assigned)
 print(
     "---Poprawnie jest jak przydzieliło po połowie jedynek i po połowie zer, w związku z losowym rozmieszczeniem centroidów, nie zawsze to sie udaje---")
 
-print('Tweety w klastrach')
-
 text_clusters = models.group_tweets(tweety, assigned, 2)
+cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
+cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
+cluster_names_three_words = naming.assign_names(text_clusters, method="word_three_most_frequent")
+cluster_names_one_word_tf_idf = naming.assign_names(text_clusters, method="word_one_tf_idf")
+cluster_names_two_words_tf_idf = naming.assign_names(text_clusters, method="word_two_tf_idf")
+cluster_names_three_words_tf_idf = naming.assign_names(text_clusters, method="word_three_tf_idf")
 
+print('Tweety w klastrach')
 for i in range(len(text_clusters)):
-    print('KLASTER ' + str(i))
+    print('KLASTER '+cluster_names_one_word[i]+", "+cluster_names_two_words[i]+", "+cluster_names_three_words[i]+", "+cluster_names_one_word_tf_idf[i]+", "+cluster_names_two_words_tf_idf[i]+", "+cluster_names_three_words_tf_idf[i])
     for j in range(len(text_clusters[i])):
         print(text_clusters[i][j])
 
