@@ -1,7 +1,9 @@
 from tweet_cleaner import tweet_obrabiarka
 import math
 import numpy as np
-#Przyjmuje caly tekst jako string
+
+
+# Przyjmuje caly tekst jako string
 def _term_count_in_sentence_raw(sent):
     sent = tweet_obrabiarka(sent, hashowac=0, stemmer=1)
     freq_table = {}
@@ -13,7 +15,8 @@ def _term_count_in_sentence_raw(sent):
 
     return freq_table
 
-#Przyjmuje pokawalkowany string :)
+
+# Przyjmuje pokawalkowany string :)
 def _term_count_in_sentence(sent):
     freq_table = {}
     for word in sent:
@@ -24,7 +27,8 @@ def _term_count_in_sentence(sent):
 
     return freq_table
 
-#Przyjmuje zbior tweetow jako calych tekstow w postaci string
+
+# Przyjmuje zbior tweetow jako calych tekstow w postaci string
 def _term_count_in_corpus_raw(sentences):
     whole_dict = {}
     for sent in sentences:
@@ -38,13 +42,15 @@ def _term_count_in_corpus_raw(sentences):
         whole_dict = dict3
     return whole_dict
 
-#Przyjmuje zbior pokawalkowanych stringow :)
+
+# Przyjmuje zbior pokawalkowanych stringow :)
 def _term_count_in_corpus(sentences):
     nowy = []
     for sent in sentences:
         nowy.append(tweet_obrabiarka(sent, hashowac=0, stemmer=1))
     dictionary = _term_count_in_corpus_raw(nowy)
     return dictionary
+
 
 def calculate_tf(sentence):
     tf_list = {}
@@ -54,19 +60,18 @@ def calculate_tf(sentence):
     return tf_list
 
 
-
 def ile_zawiera(szukana, korpus):
     licznik = 0
     for document in korpus:
         stan = 0
         for word in document:
-            word = word
             if word == szukana:
                 stan = 1
         if stan == 1:
             licznik = licznik + 1
-    #Żeby uniknąć dzielenia przez 0
+    # Żeby uniknąć dzielenia przez 0
     return licznik + 1
+
 
 def number_of_sentence_in_document(corpus):
     return len(corpus)
@@ -78,13 +83,15 @@ def calculate_idf(cutted_sentence, corpus):
         idf_list[word] = (math.log(number_of_sentence_in_document(corpus) / ile_zawiera(word, corpus)))
     return idf_list
 
+
 def calculate_tf_idf(sent, corpus):
     tf_idf = {}
     for word in sent:
         tf = calculate_tf(sentence=sent)[word]
         idf = calculate_idf(cutted_sentence=sent, corpus=corpus)[word]
-        tf_idf[word] = tf*idf
+        tf_idf[word] = tf * idf
     return tf_idf
+
 
 def list_of_all_words_base(corpus):
     lista = set()
@@ -93,6 +100,7 @@ def list_of_all_words_base(corpus):
             lista.add(word)
     return lista
 
+
 def vector_maker(feature_dict, all_word_list):
     vector = []
     for word in all_word_list:
@@ -100,7 +108,8 @@ def vector_maker(feature_dict, all_word_list):
         vector.append(wart)
     return np.array(vector)
 
-def feutures_from_corpus(corpus, method):
+
+def features_from_corpus(corpus, method):
     list_of_features = []
     list_of_all_words = list_of_all_words_base(corpus)
     for tweet in corpus:
@@ -110,9 +119,3 @@ def feutures_from_corpus(corpus, method):
             dict = _term_count_in_sentence(tweet, corpus)
         list_of_features.append(vector_maker(dict, list_of_all_words))
     return np.array(list_of_features)
-
-
-
-
-
-

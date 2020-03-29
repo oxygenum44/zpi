@@ -11,21 +11,21 @@ def get_tweets(q):
     if q =="all":
         dict_0 = []
         with open("data/tweets_search-cooking_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-coronavirus_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-politics_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-science_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-sport_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-tourism_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-uk_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
         with open("data/tweets_search-usa_recent.json", "r") as file:
-            dict_ = mergeDict(dict_, json.load(file))
+            dict_ = merge_Dict(dict_, json.load(file))
 
         oc_set = set()
         res = []
@@ -113,11 +113,11 @@ def save_credentials():
         json.dump(credentials, file)
 
 
-def mergeDict(dict1, dict2):
+def merge_Dict(dict1, dict2):
     dict3 = {}
     for key in set().union(dict1, dict2):
-        if key in dict1: dict3.setdefault(key, []).extend(dict1[key])
-        if key in dict2: dict3.setdefault(key, []).extend(dict2[key])
+        if key in dict1 : dict3.setdefault(key, []).extend(dict1[key])
+        if key in dict2 : dict3.setdefault(key, []).extend(dict2[key])
     return dict3
 
 

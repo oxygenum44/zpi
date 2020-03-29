@@ -1,13 +1,14 @@
-import numpy as np
 import distance as d
-import math
+from features import *
+
 
 class TweetsKMeans:
     # m - number of training examples
     # k - number of clusters
-    def __init__(self, bags_array, k):
-        self.data = bags_array
-        self.m, self.n = bags_array.shape
+    def __init__(self, tweets, k, method):
+        self.tweets = tweets
+        self.data = features_from_corpus(tweets, method)
+        self.m, self.n = self.data.shape
         self.k = k
 
     def run_k_means(self, iters, type_dist='jaccard'):
@@ -15,7 +16,16 @@ class TweetsKMeans:
         for i in range(0, iters):
             closest_centroids = self.closest_centroids(centroids, type_dist.lower())
             centroids = self.compute_centroids(closest_centroids, type_dist)
-        return centroids
+
+        assigned_clusters = self.closest_centroids(centroids, type_dist.lower()).squeeze().astype(int).tolist()
+        # finding text tweets centroids
+        centroids_text = []
+        for c in centroids:
+            for i in range(len(self.tweets)):
+                if np.array_equal(self.data[i], c):
+                    centroids_text.append(self.tweets[i])
+
+        return centroids_text, assigned_clusters
 
     # computing closest centroid (medoid) for each tweet
     def closest_centroids(self, centroids, type_dist):
@@ -23,7 +33,7 @@ class TweetsKMeans:
         for i in range(0, self.m):
             distances = np.zeros((self.k, 1))
             for j in range(0, self.k):
-                    distances[j] = d.dist(self.data[i], centroids[j], type = type_dist)
+                distances[j] = d.dist(self.data[i], centroids[j], type=type_dist)
             ix = np.argmin(distances)
             assigned_centroids[i] = ix
         return assigned_centroids
@@ -51,17 +61,47 @@ class TweetsKMeans:
         centroids = self.data[rand_centr_idx]
         return centroids
 
+
 class TweetsRandomClustering:
     # m - number of training examples
     # k - number of clusters
-    def __init__(self, bags_array, k):
-        self.data = bags_array
-        self.m, self.n = bags_array.shape
+    def __init__(self, tweets, k, method):
+        self.tweets = tweets
+        self.data = features_from_corpus(tweets, method)
+        self.m, self.n = self.data.shape
         self.k = k
 
-    def run_random(self):
-        random_sorted_tweets = self.data[np.random.permutation(self.m)]
-        centroids = []
-        for i in range(self.k):
-            centroids.append(random_sorted_tweets[i])
+    def initiate_centroids(self):
+        rand_centr_idx = np.random.permutation(self.m)
+        centroids = self.data[rand_centr_idx]
         return centroids
+
+    def run_random_clustering(self, iters, type_dist='jaccard'):
+        centroids = self.initiate_centroids()
+        assigned_clusters = self.closest_centroids(centroids, type_dist.lower()).squeeze().astype(int).tolist()
+        centroids_text = []
+        for c in centroids:
+            for i in range(len(self.tweets)):
+                if np.array_equal(self.data[i], c):
+                    centroids_text.append(self.tweets[i])
+        return centroids_text, assigned_clusters
+
+    # computing closest centroid (medoid) for each tweet
+    def closest_centroids(self, centroids, type_dist):
+        assigned_centroids = np.zeros((self.m, 1))
+        for i in range(0, self.m):
+            distances = np.zeros((self.k, 1))
+            for j in range(0, self.k):
+                distances[j] = d.dist(self.data[i], centroids[j], type=type_dist)
+            ix = np.argmin(distances)
+            assigned_centroids[i] = ix
+        return assigned_centroids
+
+
+def group_tweets(tweets, assigned_clusters, k):
+    clusters = []
+    for i in range(k):
+        clusters.append([])
+    for i, clstr_id in enumerate(assigned_clusters):
+        clusters[clstr_id].append(tweets[i])
+    return clusters
