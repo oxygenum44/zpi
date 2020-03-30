@@ -5,7 +5,8 @@ import numpy as np
 import features
 import copy
 
-
+#Przyjmuje listę klastrów tweetów (lista list list słów) i nazwę metody
+#Np. ([[["słowo", "słowo"],["słowo"]], [["słowo", "słowo", "słowo"]]], "two_most_frequent")
 def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
     if method == "word_one_most_frequent":
         return assign_name_by_most_frequent(cleaned_tweets_clusters, 1)
@@ -20,6 +21,8 @@ def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
     elif method == "word_three_tf_idf":
         return assign_name_by_tf_idf(cleaned_tweets_clusters, 3)
 
+#Przyjmuje listę klastrów tweetów (lista list list słów) i liczbę słów będących w nazwie wynikowej
+#Np. ([[["słowo", "słowo"],["słowo"]], [["słowo", "słowo", "słowo"]]], 2)
 def assign_name_by_most_frequent(cleaned_tweets_clusters, amount_of_words):
     names = []
     for cluster in cleaned_tweets_clusters:
@@ -32,17 +35,29 @@ def assign_name_by_most_frequent(cleaned_tweets_clusters, amount_of_words):
         elif amount_of_words == 2:
             first_word = most_frequent(words_in_cluster)
             new_list = remove_all(words_in_cluster, first_word)
-            second_word = most_frequent(new_list)
-            names.append(first_word + "&" + second_word)
+            if len(new_list) > 0:
+                second_word = most_frequent(new_list)
+                names.append(first_word + "&" + second_word)
+            else:
+                names.append(first_word)
         elif amount_of_words == 3:
             first_word = most_frequent(words_in_cluster)
             new_list = remove_all(words_in_cluster, first_word)
-            second_word = most_frequent(new_list)
-            new_list = remove_all(new_list, second_word)
-            third_word = most_frequent(new_list)
-            names.append(first_word + "&" + second_word + "&" + third_word)
+            if len(new_list) > 0:
+                second_word = most_frequent(new_list)
+                new_list = remove_all(new_list, second_word)
+                if len(new_list) > 0:
+                    third_word = most_frequent(new_list)
+                    names.append(first_word + "&" + second_word + "&" + third_word)
+                else:
+                    names.append(first_word + "&" + second_word)
+            else:
+                names.append(first_word)
+
     return names
 
+#Przyjmuje listę klastrów tweetów (lista list list słów) i liczbę słów będących w nazwie wynikowej
+#Np. ([[["słowo", "słowo"],["słowo"]], [["słowo", "słowo", "słowo"]]], 2)
 def assign_name_by_tf_idf(cleaned_tweets_clusters, amount_of_words):
     all_tweets = []
     names = []
@@ -84,17 +99,25 @@ def assign_name_by_tf_idf(cleaned_tweets_clusters, amount_of_words):
             first_word = max(cluster_strengths_dictionary.items(), key=operator.itemgetter(1))[0]
             new_dictionary = copy.copy(cluster_strengths_dictionary)
             del new_dictionary[first_word]
-            second_word = max(new_dictionary.items(), key=operator.itemgetter(1))[0]
-            names.append(first_word + "&" + second_word)
+            if len(new_dictionary) > 0:
+                second_word = max(new_dictionary.items(), key=operator.itemgetter(1))[0]
+                names.append(first_word + "&" + second_word)
+            else:
+                names.append(first_word)
         elif amount_of_words == 3:
             first_word = max(cluster_strengths_dictionary.items(), key=operator.itemgetter(1))[0]
             new_dictionary = copy.copy(cluster_strengths_dictionary)
             del new_dictionary[first_word]
-            second_word = max(new_dictionary.items(), key=operator.itemgetter(1))[0]
-            del new_dictionary[second_word]
-            third_word = max(new_dictionary.items(), key=operator.itemgetter(1))[0]
-            names.append(first_word + "&" + second_word + "&" + third_word)
-
+            if len(new_dictionary) > 0:
+                second_word = max(new_dictionary.items(), key=operator.itemgetter(1))[0]
+                del new_dictionary[second_word]
+                if len(new_dictionary) > 0:
+                    third_word = max(new_dictionary.items(), key=operator.itemgetter(1))[0]
+                    names.append(first_word + "&" + second_word + "&" + third_word)
+                else:
+                    names.append(first_word + "&" + second_word)
+            else:
+                names.append(first_word)
     return names
 
 #https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
