@@ -108,8 +108,8 @@ print(features._term_count_in_sentence(tweet1))
 
 print("Dla bartka")
 
-clustering = models.TweetsKMeans(tweety, 2, 'tf_idf')
-centroids, assigned = clustering.run_k_means(5, 'euclidean')
+clustering = models.TweetsKMeans(tweety, 3, 'tf_idf')
+centroids, assigned = clustering.run_k_means(10, 'euclidean')
 
 print(tweety)
 print("centroidy")
@@ -119,7 +119,7 @@ print(assigned)
 print(
     "---Poprawnie jest jak przydzieliło po połowie jedynek i po połowie zer, w związku z losowym rozmieszczeniem centroidów, nie zawsze to sie udaje---")
 
-text_clusters = models.group_tweets(tweety, assigned, 2)
+text_clusters = models.group_tweets(tweety, assigned, 3)
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
 cluster_names_three_words = naming.assign_names(text_clusters, method="word_three_most_frequent")
