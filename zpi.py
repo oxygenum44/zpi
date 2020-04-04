@@ -1,14 +1,8 @@
 import distance
 import features
-import twitterAPI
-from tweet_cleaner import *
 from features import *
-import numpy as np
 import models
 import naming
-
-tweet_tokenizer = TweetTokenizer()
-tweet_tokens = []
 
 print("Różnica miedzy uwzględnianiem hashtagow a nie, oba ze stemmerem")
 aa = tweet_obrabiarka(
@@ -73,7 +67,7 @@ print(distance.cosine_distance(bag_of_words[3], bag_of_words[1]))
 print()
 print(nowynowy)
 print("Demnostracja tf_idf")
-print(calculate_tf_idf(sent=nowynowy[0], corpus=nowynowy))
+print(calculate_tf_idf(tweet=nowynowy[0], corpus=nowynowy))
 
 print("Demnostracja BoW")
 print(distance.bow(tweet=nowynowy[0]))

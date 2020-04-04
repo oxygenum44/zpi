@@ -3,16 +3,33 @@ from nltk.tokenize import TweetTokenizer
 import nltk as nl
 from nltk.corpus import wordnet  # Import wordnet from the NLTK
 
-tweet_tokenizer = TweetTokenizer()
-tweet_tokens = []
+
+"""
+Module which should be used for text preprocessing 
+Outside of module only function:
+    tweet_obrabiarka() <--- MAIN
+should be used
+"""
 
 
 def tweet_tokenizator(tweet):
+    """
+    :param tweet: tweet as one string
+    :return: list of words
+    """
+    tweet_tokenizer = TweetTokenizer()
     clean_tweet = tweet_tokenizer.tokenize(tweet)
     return clean_tweet
 
 
 def remove_punctuation(word_list, hashowac):
+    """
+    This function remove words which contain non alpha-numeric symbols
+    :param word_list: one tweet as list of words
+    :param hashowac: parameter which indidate will of using hashtags or no: "0" - no hashtags will be taking into
+            account, "1" hashtags will be treated as normal words
+    :return: list of words which contains only alphanumeric words
+    """
     if hashowac:
         word_list = [word.replace('#', '') for word in word_list]
     only_alphanumeric = [word for word in word_list if word.isalnum()]
@@ -20,6 +37,11 @@ def remove_punctuation(word_list, hashowac):
 
 
 def remover_stopwords(word_list):
+    """
+    This function removes non meaningful words from list of words.
+    :param word_list: one tweet as list of word
+    :return: one tweet as list of word without stopwords
+    """
     stop_words = ["wtever", "I", "0o", "0s", "3a", "3b", "3d", "6b", "6o", "a", "a1", "a2", "a3", "a4", "ab", "able",
                   "about", "above", "abst", "ac", "accordance", "according", "accordingly", "across", "act", "actually",
                   "ad", "added", "adj", "ae", "af", "affected", "affecting", "affects", "after", "afterwards", "ag",
@@ -124,8 +146,18 @@ def remover_stopwords(word_list):
 
 
 def tweet_obrabiarka(tweet, hashowac, stemmer):
-    wl = tweet_tokenizator(tweet)
-    rp = remove_punctuation(wl, hashowac)
+    """
+    This function is to use outside of modul, it gives complex tweet preprocessing.
+    :param tweet: one tweet as a String
+    :param hashowac: parameter which indidate will of using hashtags or no: "0" - no hashtags will be taking into
+            account, "1" hashtags will be treated as normal words
+    :param stemmer: parameter which let you choose type of stemmers: "1" -  Porter Stemmer (less agressive, words more
+                    like natural words but not always), "2" - Lancaster Stemer (more agressive, words less like natural)
+                    words, "3" - lemmatization (words like normal words, but more time-consuming)
+    :return:
+    """
+    tt = tweet_tokenizator(tweet)
+    rp = remove_punctuation(tt, hashowac)
     rs = remover_stopwords(rp)
     if stemmer == 1:
         ps = nl.PorterStemmer()
@@ -133,15 +165,15 @@ def tweet_obrabiarka(tweet, hashowac, stemmer):
         ps = nl.LancasterStemmer()
     if stemmer == -1:
         ps = nl.WordNetLemmatizer()
-    new = []
+    output_list = []
     for word in rs:
         word = word.lower()
         if stemmer > 0:
             word = ps.stem(word)
         if stemmer < 0:
             word = ps.lemmatize(word)
-        new.append(word)
-    return new
+        output_list.append(word)
+    return output_list
 
 
 from nltk.stem import WordNetLemmatizer
@@ -151,8 +183,6 @@ print(tweet_obrabiarka(tweet, 0, 1))
 print(tweet_obrabiarka(tweet, 0, 2))
 print(tweet_obrabiarka(tweet, 0, -1))
 print(tweet_obrabiarka(tweet, 0, 0))
-
-
 
 first_word = wordnet.synset("Go.v.01")
 second_word = wordnet.synset("Walk.v.01")
