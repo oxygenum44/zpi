@@ -12,10 +12,10 @@ processedTweets = []
 for itr in tweets:
     processedTweets.append(tweet_obrabiarka(itr, hashowac=0, stemmer=1))
 
-clustering = models.TweetsKMeans(processedTweets, 20, 'tf_idf')
+clustering = models.TweetsKMeans(processedTweets, 8, 'tf_idf')
 #centroids, assigned = clustering.run_k_means(20, 'euclidean')
-centroids, assigned = clustering.run_k_means(20)
-text_clusters = models.group_tweets(processedTweets, assigned, 20)
+centroids, assigned = clustering.run_k_means(20, 'cosine')
+text_clusters = models.group_tweets(processedTweets, assigned, 8)
 
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
@@ -32,12 +32,14 @@ for i in range(len(text_clusters)):
 
 fig = plt.figure()
 for i in range(len(text_clusters)):
-    ax = fig.add_subplot(1, len(text_clusters)+1, i+1, title=i)
+    ax = fig.add_subplot(1, len(text_clusters), i+1, title=str(len(text_clusters[i]))+", "+cluster_names_one_word_tf_idf[i])
     tweet_string = (" ").join(list(itertools.chain.from_iterable(text_clusters[i])))
     wordcloud = WordCloud().generate(tweet_string)
     ax.imshow(wordcloud)
     ax.axis('off')
 
+plt.subplots_adjust(0.01, 0.01, 0.99, 0.99, 0.1, 0.2)
+plt.show()
 """
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")

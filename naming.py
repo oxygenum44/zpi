@@ -1,13 +1,15 @@
 import operator
-
-import numpy as np
-
 import features
 import copy
 
-#Przyjmuje listę klastrów tweetów (lista list list słów) i nazwę metody
-#Np. ([[["słowo", "słowo"],["słowo"]], [["słowo", "słowo", "słowo"]]], "two_most_frequent")
+
 def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
+    """
+    Function assigning names to clusters by a given method
+    :param cleaned_tweets_clusters: List of tweets` clusters (list of lists of lists of words)
+    :param method: Name of name-assigning method
+    :return: List of names of clusters
+    """
     if method == "word_one_most_frequent":
         return assign_name_by_most_frequent(cleaned_tweets_clusters, 1)
     elif method == "word_two_most_frequent":
@@ -21,9 +23,14 @@ def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
     elif method == "word_three_tf_idf":
         return assign_name_by_tf_idf(cleaned_tweets_clusters, 3)
 
-#Przyjmuje listę klastrów tweetów (lista list list słów) i liczbę słów będących w nazwie wynikowej
-#Np. ([[["słowo", "słowo"],["słowo"]], [["słowo", "słowo", "słowo"]]], 2)
+
+
 def assign_name_by_most_frequent(cleaned_tweets_clusters, amount_of_words):
+    """
+    :param cleaned_tweets_clusters: List of tweets` clusters (list of lists of lists of words)
+    :param amount_of_words: Amount of words in clusters` names
+    :return: List of names of clusters
+    """
     names = []
     for cluster in cleaned_tweets_clusters:
         words_in_cluster = []
@@ -56,9 +63,14 @@ def assign_name_by_most_frequent(cleaned_tweets_clusters, amount_of_words):
 
     return names
 
-#Przyjmuje listę klastrów tweetów (lista list list słów) i liczbę słów będących w nazwie wynikowej
-#Np. ([[["słowo", "słowo"],["słowo"]], [["słowo", "słowo", "słowo"]]], 2)
+
+
 def assign_name_by_tf_idf(cleaned_tweets_clusters, amount_of_words):
+    """
+    :param cleaned_tweets_clusters: List of tweets` clusters (list of lists of lists of words)
+    :param amount_of_words: Amount of words in clusters` names
+    :return: List of names of clusters
+    """
     all_tweets = []
     names = []
     for cluster in cleaned_tweets_clusters:
@@ -120,13 +132,27 @@ def assign_name_by_tf_idf(cleaned_tweets_clusters, amount_of_words):
                 names.append(first_word)
     return names
 
-#https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
+
 def most_frequent(List):
-    return max(set(List), key = List.count)
+    """
+    https://www.geeksforgeeks.org/python-find-most-frequent-element-in-a-list/
+
+    Function returning the most frequent element of a list
+    :param List: List of elements
+    :return: Most frequent element of the list
+    """
+    return max(set(List), key=List.count)
 
 
-#https://www.includehelp.com/python/remove-all-occurrences-a-given-element-from-the-list.aspx
 def remove_all(list, n):
+    """
+    https://www.includehelp.com/python/remove-all-occurrences-a-given-element-from-the-list.aspx
+
+    Function removing all occurrences a given element from the list
+    :param list: Primary state if the list
+    :param n: Element to be removed
+    :return: The list after the removal
+    """
     new_list = copy.copy(list)
     i = 0  # loop counter
     length = len(new_list)

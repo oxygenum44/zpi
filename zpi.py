@@ -47,30 +47,26 @@ print(bezstemmera)
 print()
 print("DYSTANS MIĘDZY TWEETAMI 1 I 2")
 print()
-bag_of_words = distance.bag_of_words(z_stemmerem)
-print(bag_of_words)
+bag_of_words = features.features_from_corpus(z_stemmerem, 'bag_of_word')
 
-print("Tweet 1: " + str(z_stemmerem[3]) + ", BoW: " + str(bag_of_words[3]))
+print("Tweet 1: " + str(z_stemmerem[0]) + ", BoW: " + str(bag_of_words[0]))
 
 print()
 print("Tweet 2: " + str(z_stemmerem[1]) + ", BoW: " + str(bag_of_words[1]))
 print()
 print("DYSTANS JACCARDA")
-print(distance.jaccard_distance(bag_of_words[3], bag_of_words[1]))
+print(distance.jaccard_distance(bag_of_words[0], bag_of_words[1]))
 print()
 print("DYSTANS EUKLIDESA")
-print(distance.euclidean_distance(bag_of_words[3], bag_of_words[1]))
+print(distance.euclidean_distance(bag_of_words[0], bag_of_words[1]))
 print()
 print("DYSTANS COSINE")
-print(distance.cosine_distance(bag_of_words[3], bag_of_words[1]))
+print(distance.cosine_distance(bag_of_words[0], bag_of_words[1]))
 
 print()
 print(nowynowy)
 print("Demnostracja tf_idf")
 print(calculate_tf_idf(tweet=nowynowy[0], corpus=nowynowy))
-
-print("Demnostracja BoW")
-print(distance.bow(tweet=nowynowy[0]))
 
 # kmeans test
 print('----------------KMEANS --------------')
@@ -97,12 +93,11 @@ print(calculate_tf_idf(tweet1, tweety))
 wektor_feature = vector_maker(calculate_tf_idf(tweet1, tweety), lista_slow)
 print(wektor_feature)
 
-print(distance.bow(tweet1))
 print(features._term_count_in_sentence(tweet1))
 
 print("Dla bartka")
 
-clustering = models.TweetsKMeans(tweety, 3, 'tf_idf')
+clustering = models.TweetsKMeans(tweety, 2, 'tf_idf')
 centroids, assigned = clustering.run_k_means(10, 'euclidean')
 
 print(tweety)
@@ -113,7 +108,7 @@ print(assigned)
 print(
     "---Poprawnie jest jak przydzieliło po połowie jedynek i po połowie zer, w związku z losowym rozmieszczeniem centroidów, nie zawsze to sie udaje---")
 
-text_clusters = models.group_tweets(tweety, assigned, 3)
+text_clusters = models.group_tweets(tweety, assigned, 2)
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
 cluster_names_three_words = naming.assign_names(text_clusters, method="word_three_most_frequent")
@@ -123,7 +118,8 @@ cluster_names_three_words_tf_idf = naming.assign_names(text_clusters, method="wo
 
 print('Tweety w klastrach')
 for i in range(len(text_clusters)):
-    print('KLASTER '+cluster_names_one_word[i]+", "+cluster_names_two_words[i]+", "+cluster_names_three_words[i]+", "+cluster_names_one_word_tf_idf[i]+", "+cluster_names_two_words_tf_idf[i]+", "+cluster_names_three_words_tf_idf[i])
+    #print('KLASTER '+cluster_names_one_word[i]+", "+cluster_names_two_words[i]+", "+cluster_names_three_words[i]+", "+cluster_names_one_word_tf_idf[i]+", "+cluster_names_two_words_tf_idf[i]+", "+cluster_names_three_words_tf_idf[i])
+    print('KLASTER '+str(i)+", "+cluster_names_two_words[i]+", "+cluster_names_two_words_tf_idf[i])
     for j in range(len(text_clusters[i])):
         print(text_clusters[i][j])
 
@@ -131,3 +127,4 @@ for i in range(len(text_clusters)):
 # random_clustering = models.TweetsRandomClustering(tweety, 2, 'tf_idf')
 # centroids_random, assigned_random = random_clustering.run_random_clustering(5, 'euclidean')
 # print(assigned_random)
+

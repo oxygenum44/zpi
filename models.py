@@ -11,7 +11,7 @@ class TweetsKMeans:
         self.m, self.n = self.data.shape
         self.k = k
 
-    def run_k_means(self, iters, type_dist='jaccard'):
+    def run_k_means(self, iters, type_dist='cosine'):
         centroids = self.initiate_centroids()
         for i in range(0, iters):
             closest_centroids = self.closest_centroids(centroids, type_dist.lower())

@@ -2,6 +2,12 @@ import numpy as np
 
 
 def jaccard_distance(bag_of_words_array1, bag_of_words_array2):
+    """
+    A function calculating jaccard distance between two tweets
+    :param bag_of_words_array1: np.array of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :param bag_of_words_array2: np.array of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :return: Number [0;1]
+    """
     sentence1 = set()
     sentence2 = set()
 
@@ -29,6 +35,12 @@ def jaccard_distance(bag_of_words_array1, bag_of_words_array2):
 
 
 def euclidean_distance(bag_of_words_array1, bag_of_words_array2):
+    """
+    A function calculating euclidean distance between two tweets
+    :param bag_of_words_array1: np.array of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :param bag_of_words_array2: np.array of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :return: Number [0;inf)
+    """
     root_range = len(bag_of_words_array1)
     squared_subs_sum = 0
     subtraction_list = bag_of_words_array1 - bag_of_words_array2
@@ -39,49 +51,29 @@ def euclidean_distance(bag_of_words_array1, bag_of_words_array2):
 
 
 def cosine_distance(bag_of_words_array1, bag_of_words_array2):
-    bow_np_arr1 = np.array(bag_of_words_array1)
-    bow_np_arr2 = np.array(bag_of_words_array2)
-    dot = np.dot(bow_np_arr1, bow_np_arr2)
-    norm1 = np.linalg.norm(bow_np_arr1)
-    norm2 = np.linalg.norm(bow_np_arr2)
+    """
+    A function calculating cosine distance between two tweets by subtracting their cosine similarity from 1
+    :param bag_of_words_array1: np.array of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :param bag_of_words_array2: np.array of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :return: Number [0;1]
+    """
+    dot = np.dot(bag_of_words_array1, bag_of_words_array2)
+    norm1 = np.linalg.norm(bag_of_words_array1)
+    norm2 = np.linalg.norm(bag_of_words_array2)
     cos = dot / (norm1 * norm2)
     return 1 - cos
 
+def dist(bag_of_words_array1, bag_of_words_array2, type):
+    """
 
-def bow(tweet):
-    all_words = list()
-    for word in tweet:
-        all_words.append(word)
-
-    bow = {}
-    for word in all_words:
-        bow.update({word: tweet.count(word)})
-
-    return bow
-
-
-def bag_of_words(tweets_list):
-    all_words_set = set()
-    all_words = list()
-    for tweet in tweets_list:
-        for word in tweet:
-            all_words_set.add(word)
-
-    for word in all_words_set:
-        all_words.append(word)
-
-    tweets_bags = list()
-    for tweet in tweets_list:
-        bag_of_words = np.zeros(shape=len(all_words))
-        for i in range(len(all_words)):
-            bag_of_words[i] += tweet.count(all_words[i])
-        tweets_bags.append(bag_of_words.copy())
-
-    return tweets_bags
-
-
-def dist(bag_of_words1, bag_of_words2, type):
+    :param bag_of_words_array1: List of numbers of occurrences of a word in tweet1 at given place in the list of all words
+    :param bag_of_words_array2: List of numbers of occurrences of a word in tweet2 at given place in the list of all words
+    :return: Number [0;inf), or Number [0;1]
+    :return:
+    """
     if type == 'jaccard':
-        return jaccard_distance(bag_of_words1, bag_of_words2)
+        return jaccard_distance(bag_of_words_array1, bag_of_words_array2)
     elif type == 'euclidean':
-        return euclidean_distance(bag_of_words1, bag_of_words2)
+        return euclidean_distance(bag_of_words_array1, bag_of_words_array2)
+    elif type == 'cosine':
+        return cosine_distance(bag_of_words_array1, bag_of_words_array2)
