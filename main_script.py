@@ -6,7 +6,6 @@ import twitterAPI
 from tweet_cleaner import tweet_obrabiarka
 import itertools
 
-
 tweets = twitterAPI.get_tweets('australia')['full_text']
 processedTweets = []
 for itr in tweets:
@@ -26,7 +25,7 @@ cluster_names_three_words_tf_idf = naming.assign_names(text_clusters, method="wo
 
 print('Tweety w klastrach')
 for i in range(len(text_clusters)):
-    print('KLASTER '+cluster_names_two_words[i]+", "+cluster_names_two_words_tf_idf[i])
+    print('KLASTER '+cluster_names_one_word[i]+", "+cluster_names_two_words[i]+", "+cluster_names_three_words[i]+", "+cluster_names_one_word_tf_idf[i]+", "+cluster_names_two_words_tf_idf[i]+", "+cluster_names_three_words_tf_idf[i])
     for j in range(len(text_clusters[i])):
         print(text_clusters[i][j])
 
@@ -40,16 +39,3 @@ for i in range(len(text_clusters)):
 
 plt.subplots_adjust(0.01, 0.01, 0.99, 0.99, 0.1, 0.2)
 plt.show()
-"""
-cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
-cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
-cluster_names_three_words = naming.assign_names(text_clusters, method="word_three_most_frequent")
-cluster_names_one_word_tf_idf = naming.assign_names(text_clusters, method="word_one_tf_idf")
-cluster_names_two_words_tf_idf = naming.assign_names(text_clusters, method="word_two_tf_idf")
-cluster_names_three_words_tf_idf = naming.assign_names(text_clusters, method="word_three_tf_idf")
-print('Tweety w klastrach')
-for i in range(len(text_clusters)):
-    print('KLASTER '+cluster_names_one_word[i]+", "+cluster_names_two_words[i]+", "+cluster_names_three_words[i]+", "+cluster_names_one_word_tf_idf[i]+", "+cluster_names_two_words_tf_idf[i]+", "+cluster_names_three_words_tf_idf[i])
-    for j in range(len(text_clusters[i])):
-        print(text_clusters[i][j])
-"""
