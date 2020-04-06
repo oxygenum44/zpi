@@ -65,7 +65,7 @@ def cosine_distance(bag_of_words_array1, bag_of_words_array2):
 
 def dist(bag_of_words_array1, bag_of_words_array2, type):
     """
-
+    A function calculating the distance between the tweets based on the name of method of calculating distance
     :param bag_of_words_array1: List of numbers of occurrences of a word in tweet1 at given place in the list of all words
     :param bag_of_words_array2: List of numbers of occurrences of a word in tweet2 at given place in the list of all words
     :return: Number [0;inf), or Number [0;1]

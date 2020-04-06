@@ -1,6 +1,7 @@
 import operator
 import features
 import copy
+import tweet_cleaner
 
 
 def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
@@ -10,6 +11,7 @@ def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
     :param method: Name of name-assigning method
     :return: List of names of clusters
     """
+
     if method == "word_one_most_frequent":
         return assign_name_by_most_frequent(cleaned_tweets_clusters, 1)
     elif method == "word_two_most_frequent":
@@ -27,6 +29,7 @@ def assign_names(cleaned_tweets_clusters, method="two_most_frequent"):
 
 def assign_name_by_most_frequent(cleaned_tweets_clusters, amount_of_words):
     """
+    Function assigning names to clusters by the most frequent words in the cluster
     :param cleaned_tweets_clusters: List of tweets` clusters (list of lists of lists of words)
     :param amount_of_words: Amount of words in clusters` names
     :return: List of names of clusters
@@ -67,6 +70,8 @@ def assign_name_by_most_frequent(cleaned_tweets_clusters, amount_of_words):
 
 def assign_name_by_tf_idf(cleaned_tweets_clusters, amount_of_words):
     """
+    Function assigning names to clusters by the most frequent words in the cluster
+    with frequency of these words in all the tweets` words taken into account
     :param cleaned_tweets_clusters: List of tweets` clusters (list of lists of lists of words)
     :param amount_of_words: Amount of words in clusters` names
     :return: List of names of clusters
