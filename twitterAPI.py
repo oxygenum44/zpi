@@ -121,8 +121,8 @@ def merge_Dict(dict1, dict2):
     return dict3
 
 
-download_tweets('cooking')
-print(get_tweets("cooking"))
+#download_tweets('coronavirus')
+#print(get_tweets("coronavirus"))
 
 
 
