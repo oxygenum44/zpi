@@ -68,7 +68,7 @@ class TweetsKMeans2:
         self.tweets = tweets
         tweets_words_list = []
         for sent in tweets:
-            tweets_words_list.append(tweet_obrabiarka(sent, hashowac=0, stemmer=0))
+            tweets_words_list.append(tweet_obrabiarka(sent, hashowac=0, stemmer=-1))
         self.tweets_words = tweets_words_list
         stemmed_tweets = []
         for sent in tweets:
@@ -91,7 +91,7 @@ class TweetsKMeans2:
                 if np.array_equal(self.data[i], c):
                     centroids_text.append(self.tweets_words[i])
 
-        return centroids_text, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k)
+        return centroids_text, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k, self.data)
 
     # computing closest centroid (medoid) for each tweet
     def closest_centroids(self, centroids, type_dist):
@@ -173,13 +173,16 @@ def group_tweets(tweets, assigned_clusters, k):
     return clusters
 
 
-def group_tweets2(raw_tweets, processed_tweets, assigned_clusters, k):
+def group_tweets2(raw_tweets, processed_tweets, assigned_clusters, k, features):
     raw_clusters = []
     processed_clusters = []
+    features_clusters = []
     for i in range(k):
         processed_clusters.append([])
         raw_clusters.append([])
+        features_clusters.append([])
     for i, clstr_id in enumerate(assigned_clusters):
         processed_clusters[clstr_id].append(processed_tweets[i])
         raw_clusters[clstr_id].append(raw_tweets[i])
-    return raw_clusters, processed_clusters
+        features_clusters[clstr_id].append(features[i])
+    return raw_clusters, processed_clusters, features_clusters
