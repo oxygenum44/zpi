@@ -70,10 +70,10 @@ class TweetsKMeans2:
         for sent in tweets:
             tweets_words_list.append(tweet_obrabiarka(sent, hashowac=0, stemmer=-1))
         self.tweets_words = tweets_words_list
-        stemmed_tweets = []
+        self.processed_tweets = []
         for sent in tweets:
-            stemmed_tweets.append(tweet_obrabiarka(sent, hashowac=0, stemmer=1))
-        self.data = features_from_corpus(stemmed_tweets, method)
+            self.processed_tweets.append(tweet_obrabiarka(sent, hashowac=0, stemmer=1))
+        self.data = features_from_corpus(self.processed_tweets, method)
         self.m, self.n = self.data.shape
         self.k = k
 
@@ -86,12 +86,16 @@ class TweetsKMeans2:
         assigned_clusters = self.closest_centroids(centroids, type_dist.lower()).squeeze().astype(int).tolist()
         # finding text tweets centroids
         centroids_text = []
+        centroids_processed_text = []
+        centroids_features = []
         for c in centroids:
             for i in range(len(self.tweets_words)):
                 if np.array_equal(self.data[i], c):
                     centroids_text.append(self.tweets_words[i])
+                    centroids_processed_text.append(self.processed_tweets[i])
+                    centroids_features.append(self.data[i])
 
-        return centroids_text, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k, self.data)
+        return centroids_text, centroids_processed_text, centroids_features, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k, self.data)
 
     # computing closest centroid (medoid) for each tweet
     def closest_centroids(self, centroids, type_dist):

@@ -11,7 +11,7 @@ processedTweets = []
 for itr in tweets:
     processedTweets.append(tweet_obrabiarka(itr, hashowac=1, stemmer=1))
 
-centroids, (raw_tweets_clusters, processed_tweets_clusters, tweet_features_clusters) = models.TweetsKMeans2(tweets, 8, 'tf_idf').run_k_means(20)
+centroids_text, centroids_processed_text, centroids_features, (raw_tweets_clusters, processed_tweets_clusters, tweet_features_clusters) = models.TweetsKMeans2(tweets, 8, 'tf_idf').run_k_means(20, 'cosine')
 
 cluster_names_one_word = naming.assign_names(processed_tweets_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(processed_tweets_clusters, method="word_two_most_frequent")
