@@ -94,7 +94,7 @@ class TweetsKMeans2:
                     centroids_text.append(self.tweets_words[i])
                     centroids_processed_text.append(self.processed_tweets[i])
                     centroids_features.append(self.data[i])
-
+                    break
         return centroids_text, centroids_processed_text, centroids_features, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k, self.data)
 
     # computing closest centroid (medoid) for each tweet

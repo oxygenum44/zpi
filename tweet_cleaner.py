@@ -22,6 +22,14 @@ def tweet_tokenizator(tweet):
     return clean_tweet
 
 
+"""
+tweet = "#Elafonisi Visits you! 🗺 #Elafonisi has beautiful sandy beaches fringed with pink coral sand and the crystal clear waters of the sea & the lagoon. #Travel #Nature #Photo #Photography #Greece"
+print(tweet)
+tt = tweet_tokenizator(tweet)
+print(tweet_tokenizator(tweet))
+"""
+
+
 def remove_punctuation(word_list, hashowac):
     """
     This function remove words which contain non alpha-numeric symbols
@@ -34,6 +42,15 @@ def remove_punctuation(word_list, hashowac):
         word_list = [word.replace('#', '') for word in word_list]
     only_alphanumeric = [word for word in word_list if word.isalnum()]
     return only_alphanumeric
+
+
+"""
+a = remove_punctuation(tt, 0)
+b = remove_punctuation(tt, 1)
+
+print(a)
+print(b)
+"""
 
 
 def remover_stopwords(word_list):
@@ -145,6 +162,8 @@ def remover_stopwords(word_list):
     return filtered_sentence
 
 
+# print(remover_stopwords(b))
+
 def tweet_obrabiarka(tweet, hashowac, stemmer):
     """
     This function is to use outside of modul, it gives complex tweet preprocessing.
@@ -176,8 +195,15 @@ def tweet_obrabiarka(tweet, hashowac, stemmer):
     return output_list
 
 
+"""
+print(tweet_obrabiarka(tweet,1, 1))
+print(tweet_obrabiarka(tweet,1, 2))
+print(tweet_obrabiarka(tweet,1, -1))
+"""
+
 from nltk.stem import WordNetLemmatizer
 
+"""
 tweet = 'I’m a HArd Time time creation created creativity time Mans boycotts Man. I see thing from Poland, I boycott. #boycottmulan I don’t need #WuhanCoronavirus #ChineseCoronavirus wtever you call it You created the virus and now people are suffering becoz of u'
 print(tweet_obrabiarka(tweet, 0, 1))
 print(tweet_obrabiarka(tweet, 0, 2))
@@ -190,3 +216,4 @@ print('Similarity: ' + str(first_word.wup_similarity(second_word)))
 first_word = wordnet.synset("Leader.n.01")
 second_word = wordnet.synset("Fugleman.n.01")
 print('Similarity: ' + str(first_word.wup_similarity(second_word)))
+"""

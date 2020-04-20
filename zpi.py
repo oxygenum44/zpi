@@ -47,13 +47,19 @@ print(bezstemmera)
 print()
 print("DYSTANS MIĘDZY TWEETAMI 1 I 2")
 print()
-bag_of_words = features.features_from_corpus(z_stemmerem, 'bag_of_word')
+bag_of_words = features.features_from_corpus(z_stemmerem, 'tf_idf')
 
-print("Tweet 1: " + str(z_stemmerem[0]) + ", BoW: " + str(bag_of_words[0]))
+print("Tweet 1: " + str(z_stemmerem[0]) + ", TFIDF: " + str(bag_of_words[0]))
 
 print()
-print("Tweet 2: " + str(z_stemmerem[1]) + ", BoW: " + str(bag_of_words[1]))
+print("Tweet 2: " + str(z_stemmerem[1]) + ", TFIDF: " + str(bag_of_words[1]))
 print()
+print("Tweet 3: " + str(z_stemmerem[2]) + ", TFIDF: " + str(bag_of_words[2]))
+
+print()
+print("Tweet 4: " + str(z_stemmerem[3]) + ", TFIDF: " + str(bag_of_words[3]))
+print()
+
 print("DYSTANS JACCARDA")
 print(distance.jaccard_distance(bag_of_words[0], bag_of_words[1]))
 print()
