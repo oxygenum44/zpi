@@ -24,7 +24,7 @@ for i in range(2, 20):
     cluster_names_one_word_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_one_tf_idf")
     cluster_names_two_words_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_two_tf_idf")
     cluster_names_three_words_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_three_tf_idf")
-    
+
     print("CENTROIDY:")
     print(centroids_features[0])
     print('Tweety w klastrach')
@@ -58,10 +58,8 @@ for i in range(len(tweet_features_clusters)):
     wordcloud = WordCloud().generate(tweet_string)
     ax.imshow(wordcloud)
     ax.axis('off')
-
 #plt.subplots_adjust(0.01, 0.01, 0.99, 0.99, 0.1, 0.2)
 plt.show()
-
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
 cluster_names_three_words = naming.assign_names(text_clusters, method="word_three_most_frequent")

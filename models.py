@@ -79,9 +79,11 @@ class TweetsKMeans2:
 
     def run_k_means(self, iters, type_dist='cosine'):
         centroids = self.initiate_centroids()
+        centroids_history = [centroids]
         for i in range(0, iters):
             closest_centroids = self.closest_centroids(centroids, type_dist.lower())
             centroids = self.compute_centroids(closest_centroids, type_dist)
+            centroids_history.append(centroids)
 
         assigned_clusters = self.closest_centroids(centroids, type_dist.lower()).squeeze().astype(int).tolist()
         # finding text tweets centroids
@@ -95,6 +97,14 @@ class TweetsKMeans2:
                     centroids_processed_text.append(self.processed_tweets[i])
                     centroids_features.append(self.data[i])
                     break
+
+        if len(centroids_text) == 1:
+            print("CENTROIDS HISTORY: ")
+            # for i in range(len(centroids_history)):
+            #     print("    GENERATION "+str(i)+": ")
+            for j in range(len(centroids_history[0])):
+                print(str(centroids_history[0][j]))
+
         return centroids_text, centroids_processed_text, centroids_features, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k, self.data)
 
     # computing closest centroid (medoid) for each tweet
