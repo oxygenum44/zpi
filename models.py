@@ -100,8 +100,9 @@ class TweetsKMeans2:
 
         if len(centroids_text) == 1:
             print("CENTROIDS HISTORY: ")
-            # for i in range(len(centroids_history)):
-            #     print("    GENERATION "+str(i)+": ")
+            for i in range(len(centroids_history)):
+                print("    GENERATION "+str(i)+": ")
+                print(str(centroids_history[i]))
             for j in range(len(centroids_history[0])):
                 print(str(centroids_history[0][j]))
 
