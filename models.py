@@ -79,11 +79,9 @@ class TweetsKMeans2:
 
     def run_k_means(self, iters, type_dist='cosine'):
         centroids = self.initiate_centroids()
-        centroids_history = [centroids]
         for i in range(0, iters):
             closest_centroids = self.closest_centroids(centroids, type_dist.lower())
             centroids = self.compute_centroids(closest_centroids, type_dist)
-            centroids_history.append(centroids)
 
         assigned_clusters = self.closest_centroids(centroids, type_dist.lower()).squeeze().astype(int).tolist()
         # finding text tweets centroids
@@ -98,14 +96,6 @@ class TweetsKMeans2:
                     centroids_features.append(self.data[i])
                     break
 
-        if len(centroids_text) == 1:
-            print("CENTROIDS HISTORY: ")
-            for i in range(len(centroids_history)):
-                print("    GENERATION "+str(i)+": ")
-                print(str(centroids_history[i]))
-            for j in range(len(centroids_history[0])):
-                print(str(centroids_history[0][j]))
-
         return centroids_text, centroids_processed_text, centroids_features, group_tweets2(self.tweets, self.tweets_words, assigned_clusters, self.k, self.data)
 
     # computing closest centroid (medoid) for each tweet
@@ -113,10 +103,17 @@ class TweetsKMeans2:
         assigned_centroids = np.zeros((self.m, 1))
         for i in range(0, self.m):
             distances = np.zeros((self.k, 1))
+            found_same = False
+            found_same_index = -1
             for j in range(0, self.k):
                 distances[j] = d.dist(self.data[i], centroids[j], type=type_dist)
-            ix = np.argmin(distances)
-            assigned_centroids[i] = ix
+                if np.array_equal(self.data[i], centroids[j]):
+                    found_same = True
+                    found_same_index = j
+            if found_same:
+                assigned_centroids[i] = found_same_index
+            else:
+                assigned_centroids[i] = np.argmin(distances)
         return assigned_centroids
 
     # computing the mean coordinates of assigned points and updating the position of a centroid using that data
