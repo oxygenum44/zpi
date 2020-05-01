@@ -4,10 +4,12 @@ import numpy as np
 
 def elbow(centers, clusters):
     sum = 0
+    sum2 = 0
     for klaster in range(len(clusters)):
         for tweet in clusters[klaster]:
             sum = sum + distance.dist(centers[klaster], tweet, type='euclidean')
-    return sum
+            sum2 = sum2 + distance.dist(centers[klaster], tweet, type='cosine')
+    return sum, sum2
 
 
 def average_distance(tweet, klaster):
@@ -32,15 +34,16 @@ def closest_center(centers):
     return closest_list
 
 
-def silhoutte(centersy, clusters):
+def silhoutte(clusters):
     suma = 0
-    centersy = np.array(centersy)
-    closest_centers = closest_center(centersy)
     for klaster in range(len(clusters)):
-        centrum_sasiednie_indeks = closest_centers[klaster]
         for tweet in clusters[klaster]:
             a = average_distance(tweet, clusters[klaster])
-            b = average_distance(tweet, clusters[centrum_sasiednie_indeks])
-            add = (b - a) / max(a, b)
+            bmin = 999999999
+            for k in clusters:
+                b = average_distance(tweet, k)
+                if b != a and b < bmin:
+                    bmin = b
+            add = (bmin - a) / max(a, bmin)
             suma = suma + add
     return suma

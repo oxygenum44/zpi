@@ -60,16 +60,17 @@ def cosine_distance(bag_of_words_array1, bag_of_words_array2):
     dot = np.dot(bag_of_words_array1, bag_of_words_array2)
     norm1 = np.linalg.norm(bag_of_words_array1)
     norm2 = np.linalg.norm(bag_of_words_array2)
-    cos = dot / (norm1 * norm2)
+    cos = dot / (norm1 * norm2) if norm1 * norm2 != 0 else 1
     return 1 - cos
+
 
 def dist(bag_of_words_array1, bag_of_words_array2, type):
     """
     A function calculating the distance between the tweets based on the name of method of calculating distance
     :param bag_of_words_array1: List of numbers of occurrences of a word in tweet1 at given place in the list of all words
     :param bag_of_words_array2: List of numbers of occurrences of a word in tweet2 at given place in the list of all words
+    :type: information about type of method as below
     :return: Number [0;inf), or Number [0;1]
-    :return:
     """
     if type == 'jaccard':
         return jaccard_distance(bag_of_words_array1, bag_of_words_array2)
