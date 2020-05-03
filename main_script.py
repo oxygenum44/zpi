@@ -5,11 +5,15 @@ import naming
 import twitterAPI
 from tweet_cleaner import tweet_obrabiarka
 import itertools
+import model_selection
 
 tweets = twitterAPI.get_tweets('australia')['full_text']
 processedTweets = []
 for itr in tweets:
     processedTweets.append(tweet_obrabiarka(itr, hashowac=1, stemmer=1))
+
+selected_distance_calculating = model_selection.select_distance_calculating(20, tweets, ['euclidean', 'cosine', 'jaccard'])
+print(selected_distance_calculating)
 
 elbow_wart = []
 for i in range(2, 20):

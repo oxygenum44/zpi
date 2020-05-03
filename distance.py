@@ -1,4 +1,9 @@
+import time
+
 import numpy as np
+
+import helpers
+import wikipedia_breadth_first_search
 
 
 def jaccard_distance(bag_of_words_array1, bag_of_words_array2):
@@ -63,6 +68,7 @@ def cosine_distance(bag_of_words_array1, bag_of_words_array2):
     cos = dot / (norm1 * norm2)
     return 1 - cos
 
+
 def dist(bag_of_words_array1, bag_of_words_array2, type):
     """
     A function calculating the distance between the tweets based on the name of method of calculating distance
@@ -77,3 +83,27 @@ def dist(bag_of_words_array1, bag_of_words_array2, type):
         return euclidean_distance(bag_of_words_array1, bag_of_words_array2)
     elif type == 'cosine':
         return cosine_distance(bag_of_words_array1, bag_of_words_array2)
+
+
+def terms_dist(term1, term2, wikipedia_database, type):
+    """
+    A function calculating the distance between different terms
+    :param term1: First term name
+    :param term2: Second term name
+    :param type: Type of distance calculation
+    :return:
+    """
+    if type == 'path_len_multiplication':
+        return path_len_multiplication_term_dist(term1, term2, wikipedia_database)
+    else:
+        return int('inf')
+
+
+def path_len_multiplication_term_dist(term1, term2, wikipedia_database):
+    page_ids = helpers.get_page_root_ids_from_titles(wikipedia_database, [term1, term2])
+    direction1_shortest_paths = wikipedia_breadth_first_search.breadth_first_search(page_ids[0], page_ids[1],
+                                                                                    wikipedia_database)
+    direction2_shortest_paths = wikipedia_breadth_first_search.breadth_first_search(page_ids[1], page_ids[0],
+                                                                                    wikipedia_database)
+
+    return (len(direction1_shortest_paths[0])-1)*(len(direction2_shortest_paths[0])-1)
