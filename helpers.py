@@ -6,6 +6,7 @@ Origin: https://github.com/jwngr/sdow/blob/master/sdow/helpers.py
 from pyparsing import basestring
 import requests
 
+
 def get_page_root_ids_from_titles(wikipedia_database, page_titles):
     page_ids_string = get_page_ids(page_titles)
     page_ids = []
@@ -14,6 +15,14 @@ def get_page_root_ids_from_titles(wikipedia_database, page_titles):
         page_ids.append(wikipedia_database.get_root_id(int(page_id_string)))
 
     return page_ids
+
+
+def page_exists(page_title):
+    if get_page_ids([page_title]) != ['-1']:
+        return True
+    else:
+        return False
+
 
 def get_page_ids(page_titles):
     url = (
@@ -30,6 +39,7 @@ def get_page_ids(page_titles):
         for page_id, page_info in json_response['query']['pages'].items()}
 
     return [title_to_page_id[title] for title in page_titles]
+
 
 def get_sanitized_page_title(page_title):
     """Validates and returns the sanitized version of the provided page title, transforming it into

@@ -1,7 +1,6 @@
 import time
 
 import wikipedia
-import wikipediaapi
 from scipy._lib.six import xrange
 
 import distance
@@ -109,30 +108,25 @@ def search_n_grams(tweet, n):
 search_n_grams(['Wroclaw', 'jest', 'Ala', 'ma', 'Kota', 'kot', 'ma', 'alę'], 2)
 search_n_grams(['Wroclaw', 'jest', 'Ala', 'ma', 'Kota', 'kot', 'ma', 'alę'], 1)
 
-wiki_wiki = wikipediaapi.Wikipedia('en')
 
-
-def search_grams(tweet):
+def search_grams(wikipedia_database, tweet):
     lista = []
-    lista2 = []
-    slowo = []
     licznik = 0
     while licznik < len(tweet) - 1:
         slowo1 = tweet[licznik]
         slowo2 = tweet[licznik + 1]
         bigram = slowo1 + " " + slowo2
-        if wiki_wiki.page(bigram).exists():
+        if helpers.page_exists(bigram):
             lista.append(bigram)
-            lista2.append(wikipedia.page(bigram).pageid)
             licznik += 2
-        elif wiki_wiki.page(slowo1).exists():
+        elif helpers.page_exists(slowo1):
             lista.append(slowo1)
-            lista2.append(wikipedia.page(slowo1).pageid)
             licznik += 1
         else:
             licznik += 1
+    lista2 = helpers.get_page_root_ids_from_titles(wikipedia_database, lista)
     print(lista2)
     print(lista)
 
 
-search_grams(['Wroclaw', 'Bil', 'Gates', 'Kioiooass', 'Paris', 'Brussels', 'Trevor', 'Cherry'])
+search_grams(wikipedia_database, ['Wroclaw', 'Bil', 'Gates', 'Kioiooass', 'Paris', 'Brussels', 'Trevor', 'Cherry'])
