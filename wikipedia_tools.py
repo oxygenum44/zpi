@@ -1,6 +1,9 @@
 import time
 
 import wikipedia
+import wikipediaapi
+from scipy._lib.six import xrange
+
 import distance
 import tweet_cleaner
 import features
@@ -8,6 +11,7 @@ import database
 import wikipedia_breadth_first_search
 import helpers
 
+"""
 # Wyrzuca wszystkie artykuły pasujące do wyszukiwania
 print(wikipedia.search("Bill"))
 print(wikipedia.search("Bill", results=1))
@@ -27,6 +31,7 @@ print(wikipedia.geosearch(51.1, 17.01))
 print(wikipedia.page("Wysoka (Wroclaw county)").categories)
 
 print(wikipedia.summary("Wroclaw Clinton"))
+"""
 
 wikipedia_database = database.Database(sdow_database='/Users/Adam/Desktop/sdow.sqlite')
 
@@ -94,3 +99,40 @@ print()
 print("Distance between "+page_titles[2]+" and "+page_titles[2]+" is: "+str(term_dist))
 print("Execution time: "+str(elapsed_time5)+" seconds")
 
+
+def search_n_grams(tweet, n):
+    grams = [tweet[i:i + n] for i in xrange(len(tweet) - n + 1)]
+    grams = [' '.join(w for w in word) for word in grams]
+    print(grams)
+
+
+search_n_grams(['Wroclaw', 'jest', 'Ala', 'ma', 'Kota', 'kot', 'ma', 'alę'], 2)
+search_n_grams(['Wroclaw', 'jest', 'Ala', 'ma', 'Kota', 'kot', 'ma', 'alę'], 1)
+
+wiki_wiki = wikipediaapi.Wikipedia('en')
+
+
+def search_grams(tweet):
+    lista = []
+    lista2 = []
+    slowo = []
+    licznik = 0
+    while licznik < len(tweet) - 1:
+        slowo1 = tweet[licznik]
+        slowo2 = tweet[licznik + 1]
+        bigram = slowo1 + " " + slowo2
+        if wiki_wiki.page(bigram).exists():
+            lista.append(bigram)
+            lista2.append(wikipedia.page(bigram).pageid)
+            licznik += 2
+        elif wiki_wiki.page(slowo1).exists():
+            lista.append(slowo1)
+            lista2.append(wikipedia.page(slowo1).pageid)
+            licznik += 1
+        else:
+            licznik += 1
+    print(lista2)
+    print(lista)
+
+
+search_grams(['Wroclaw', 'Bil', 'Gates', 'Kioiooass', 'Paris', 'Brussels', 'Trevor', 'Cherry'])
