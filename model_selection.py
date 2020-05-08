@@ -12,7 +12,7 @@ def select_distance_calculating(clusters_amount, tweets, methods):
                                                                                                             clusters_amount,
                                                                                                             'tf_idf').run_k_means(
             20, method)
-        silhoutte = analyze.silhoutte(centroids_features, tweet_features_clusters)
+        silhoutte = analyze.silhoutte(tweet_features_clusters)
         if silhoutte < min_silhoutte:
             min_silhoutte = silhoutte
             best_method = method
