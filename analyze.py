@@ -1,4 +1,5 @@
 import distance
+import sklearn.metrics as skm
 import numpy as np
 
 
@@ -47,3 +48,16 @@ def silhoutte(clusters):
             add = (bmin - a) / max(a, bmin)
             suma = suma + add
     return suma
+
+
+def calinski_harabasz(clusters):
+    data = []
+    labels = []
+    for cluster_nr in range(len(clusters)):
+        for tweet in clusters[cluster_nr]:
+            data.append(np.array(tweet))
+            labels.append(cluster_nr)
+    data = np.array(data)
+    print(data.shape)
+    print(len(labels))
+    return skm.calinski_harabasz_score(data, labels)
