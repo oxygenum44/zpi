@@ -48,12 +48,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(proces)
-feutures = np.array(features_from_corpus(processedTweets, 'tf_idf'))
-print(feutures)
+# feutures = np.array(features_from_corpus(processedTweets, 'tf_idf'))
+# print(feutures)
 from sklearn import preprocessing
 
 features_normalize = preprocessing.normalize(X)
-kmeans = KMeans(n_clusters=6, init='random', n_init=1, max_iter=300).fit(feutures)
+kmeans = KMeans(n_clusters=6, init='k-means++', n_init=10, max_iter=300).fit(X)
 print(kmeans.labels_)
 print(kmeans.cluster_centers_)
 
