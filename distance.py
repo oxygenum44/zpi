@@ -106,4 +106,10 @@ def path_len_multiplication_term_dist(term1, term2, wikipedia_database):
     direction2_shortest_paths = wikipedia_breadth_first_search.breadth_first_search(page_ids[1], page_ids[0],
                                                                                     wikipedia_database)
 
-    return (len(direction1_shortest_paths[0])-1)*(len(direction2_shortest_paths[0])-1)
+    dist_befr_normalization = (len(direction1_shortest_paths[0])-1)*(len(direction2_shortest_paths[0])-1)
+
+    if dist_befr_normalization == 0:
+        return 0
+    else:
+        base = 1-(1/(dist_befr_normalization+1))
+        return base*base
