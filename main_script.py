@@ -14,17 +14,17 @@ tweets4 = twitterAPI.get_tweets('australia')['full_text']
 tweets5 = twitterAPI.get_tweets('tourism')['full_text']
 tweets6 = twitterAPI.get_tweets('sport')['full_text']
 print(len(tweets))
-tweets = tweets[int(len(tweets) / 1.2):]
+tweets = tweets[int(len(tweets) / 1.4):]
 print(len(tweets))
-tweets2 = tweets2[int(len(tweets2) / 1.025):]
+tweets2 = tweets2[int(len(tweets2) / 1.03):]
 print(len(tweets2))
-tweets3 = tweets3[int(len(tweets3) / 1.2):]
+tweets3 = tweets3[int(len(tweets3) / 1.4):]
 print(len(tweets3))
 tweets4 = tweets4[int(len(tweets4) / 2):]
 print(len(tweets4))
-tweets5 = tweets4[int(len(tweets4) / 1.2):]
+tweets5 = tweets4[int(len(tweets4) / 1.4):]
 print(len(tweets5))
-tweets6 = tweets4[int(len(tweets4) / 1.2):]
+tweets6 = tweets4[int(len(tweets4) / 1.4):]
 print(len(tweets6))
 tweets = tweets + tweets2 + tweets3 + tweets4 + tweets5 + tweets6
 print(len(tweets))
@@ -37,7 +37,27 @@ for itr in tweets:
 
 size = [(0, 0), (1, 1), (1, 2), (2, 2), (2, 2), (2, 3), (2, 3), (3, 3), (3, 3), (3, 3), (4, 3), (4, 3), (4, 3), (4, 4),
         (4, 4), (4, 4), (4, 4)]
+from features import features_from_corpus
+from sklearn.cluster import KMeans
+import numpy as np
 
+print(processedTweets)
+proces = [' '.join(str(elem) for elem in t) for t in processedTweets]
+print(proces)
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(proces)
+feutures = np.array(features_from_corpus(processedTweets, 'tf_idf'))
+print(feutures)
+from sklearn import preprocessing
+
+features_normalize = preprocessing.normalize(X)
+kmeans = KMeans(n_clusters=6, init='random', n_init=1, max_iter=300).fit(feutures)
+print(kmeans.labels_)
+print(kmeans.cluster_centers_)
+
+"""
 elbow_wart = []
 for i in range(2, 16):
     col, row = size[i]
@@ -52,7 +72,7 @@ for i in range(2, 16):
     cluster_names_one_word_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_one_tf_idf")
     cluster_names_two_words_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_two_tf_idf")
     cluster_names_three_words_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_three_tf_idf")
-    """
+    """"""
     print("CENTROIDY:")
     print(centroids_features[0])
     print('Tweety w klastrach')
@@ -60,7 +80,7 @@ for i in range(2, 16):
         print('KLASTER '+cluster_names_two_words[i]+", "+cluster_names_two_words_tf_idf[i])
         for j in range(len(tweet_features_clusters[ii])):
             print(tweet_features_clusters[i][j])
-    """
+    """"""
     import analyze
 
     print("PRINT")
@@ -84,7 +104,7 @@ for i in range(2, 16):
 
 print(elbow_wart)
 
-"""
+
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")
 cluster_names_three_words = naming.assign_names(text_clusters, method="word_three_most_frequent")
