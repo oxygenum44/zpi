@@ -55,7 +55,36 @@ from sklearn import preprocessing
 features_normalize = preprocessing.normalize(X)
 kmeans = KMeans(n_clusters=6, init='k-means++', n_init=10, max_iter=300).fit(X)
 print(kmeans.labels_)
+print("Cluster centers: ")
 print(kmeans.cluster_centers_)
+
+models.TweetsKMeansSKLib(tweets, 6).run_k_means(30)
+
+raw_tweets_clusters, processed_tweets_clusters = models.TweetsKMeansSKLib(tweets, 6).run_k_means(30)
+
+print(processed_tweets_clusters)
+
+cluster_names_two_words = naming.assign_names(processed_tweets_clusters, method="word_two_most_frequent")
+cluster_names_two_words_tf_idf = naming.assign_names(processed_tweets_clusters, method="word_two_tf_idf")
+
+print('Tweety w klastrach')
+for ii in range(len(raw_tweets_clusters)):
+    print('KLASTER '+cluster_names_two_words[ii]+", "+cluster_names_two_words_tf_idf[ii])
+    for j in range(len(raw_tweets_clusters[ii])):
+        print(processed_tweets_clusters[ii][j])
+
+col, row = size[6]
+fig = plt.figure()
+ile = len(processed_tweets_clusters)
+for iii in range(ile):
+    ax = fig.add_subplot(col, row, iii + 1,
+                             title=str(len(processed_tweets_clusters[iii])) + ", " + cluster_names_two_words_tf_idf[iii])
+    tweet_string = " ".join(list(itertools.chain.from_iterable(processed_tweets_clusters[iii])))
+    wordcloud = WordCloud().generate(tweet_string)
+    ax.imshow(wordcloud)
+    ax.axis('off')
+plt.subplots_adjust(0.01, 0.01, 0.99, 0.99, 0.1, 0.1)
+plt.show()
 
 """
 elbow_wart = []
@@ -103,7 +132,6 @@ for i in range(2, 16):
 
 
 print(elbow_wart)
-
 
 cluster_names_one_word = naming.assign_names(text_clusters, method="word_one_most_frequent")
 cluster_names_two_words = naming.assign_names(text_clusters, method="word_two_most_frequent")

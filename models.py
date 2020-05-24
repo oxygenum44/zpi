@@ -1,5 +1,10 @@
 import distance as d
 from features import *
+from sklearn.cluster import KMeans
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn import preprocessing
+
 
 class TweetsKMeans:
     # m - number of training examples
@@ -59,6 +64,33 @@ class TweetsKMeans:
         rand_centr_idx = np.random.permutation(self.m)
         centroids = self.data[rand_centr_idx]
         return centroids
+
+
+class TweetsKMeansSKLib:
+    def __init__(self, tweets, k):
+        self.tweets = tweets
+        self.processed_tweets = []
+        self.tweets_words = []
+        for sent in tweets:
+            self.processed_tweets.append(tweet_obrabiarka(sent, hashowac=0, stemmer=1))
+        proces = [' '.join(str(elem) for elem in t) for t in self.processed_tweets]
+
+        for sent in tweets:
+            self.tweets_words.append(tweet_obrabiarka(sent, hashowac=0, stemmer=-1))
+
+        vectorizer = TfidfVectorizer()
+        self.X = vectorizer.fit_transform(proces)
+
+        self.data = np.array(features_from_corpus(self.processed_tweets, 'tf_idf'))
+        self.m, self.n = self.data.shape
+        self.k = k
+
+    def run_k_means(self, max_iter):
+        kmeans = KMeans(n_clusters=self.k, init='k-means++', n_init=10, max_iter=max_iter).fit(self.X)
+        return group_tweets_sklearn(self.tweets,
+                                                                                               self.tweets_words,
+                                                                                               kmeans.labels_,
+                                                                                               self.k)
 
 
 class TweetsKMeans2:
@@ -198,3 +230,15 @@ def group_tweets2(raw_tweets, processed_tweets, assigned_clusters, k, features):
         raw_clusters[clstr_id].append(raw_tweets[i])
         features_clusters[clstr_id].append(features[i])
     return raw_clusters, processed_clusters, features_clusters
+
+def group_tweets_sklearn(raw_tweets, processed_tweets, assigned_clusters, k):
+    raw_clusters = []
+    processed_clusters = []
+    for i in range(k):
+        processed_clusters.append([])
+        raw_clusters.append([])
+    for i, clstr_id in enumerate(assigned_clusters):
+        processed_clusters[clstr_id].append(processed_tweets[i])
+        raw_clusters[clstr_id].append(raw_tweets[i])
+    return raw_clusters, processed_clusters
+
