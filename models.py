@@ -81,16 +81,13 @@ class TweetsKMeansSKLib:
         vectorizer = TfidfVectorizer()
         self.X = vectorizer.fit_transform(proces)
 
-        self.data = np.array(features_from_corpus(self.processed_tweets, 'tf_idf'))
+        self.data = preprocessing.normalize(np.array(features_from_corpus(self.processed_tweets, 'tf_idf')))
         self.m, self.n = self.data.shape
         self.k = k
 
     def run_k_means(self, max_iter):
-        kmeans = KMeans(n_clusters=self.k, init='k-means++', n_init=10, max_iter=max_iter).fit(self.X)
-        return group_tweets_sklearn(self.tweets,
-                                                                                               self.tweets_words,
-                                                                                               kmeans.labels_,
-                                                                                               self.k)
+        kmeans = KMeans(n_clusters=self.k, init='k-means++', n_init=10, max_iter=max_iter).fit(self.data)
+        return group_tweets_sklearn(self.tweets, self.tweets_words, kmeans.labels_, self.k)
 
 
 class TweetsKMeans2:
