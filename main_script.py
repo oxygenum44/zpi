@@ -60,7 +60,8 @@ print(kmeans.cluster_centers_)
 
 models.TweetsKMeansSKLib(tweets, 6).run_k_means(30)
 
-raw_tweets_clusters, processed_tweets_clusters = models.TweetsKMeansSKLib(tweets, 6).run_k_means(30)
+raw_centroids, processed_centroids, features_centroids, \
+    (raw_tweets_clusters, processed_tweets_clusters, features_tweeets_clusters) = models.TweetsKMeansSKLib(tweets, 6).run_k_means(30)
 
 print(processed_tweets_clusters)
 

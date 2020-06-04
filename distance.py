@@ -107,9 +107,10 @@ def path_len_multiplication_term_dist(term1, term2, wikipedia_database):
                                                                                     wikipedia_database)
 
     dist_befr_normalization = (len(direction1_shortest_paths[0])-1)*(len(direction2_shortest_paths[0])-1)
+    print(len(direction1_shortest_paths[0]))
+    print(len(direction2_shortest_paths[0]))
+    base = 1 - (1 / (dist_befr_normalization + 1))
+    print(base)
+    return base * base
 
-    if dist_befr_normalization == 0:
-        return 0
-    else:
-        base = 1-(1/(dist_befr_normalization+1))
-        return base*base
+

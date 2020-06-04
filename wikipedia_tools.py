@@ -34,7 +34,7 @@ print(wikipedia.summary("Wroclaw Clinton"))
 
 wikipedia_database = database.Database(sdow_database='/Users/Adam/Desktop/sdow.sqlite')
 
-page_titles = ['Clinton', 'Wrocław', 'Cat', 'Animal', 'Computer', 'Electricity']
+page_titles = ['Clinton', 'Wrocław', 'Sea', 'Swimming pool', 'Computer', 'Electricity']
 page_ids = helpers.get_page_root_ids_from_titles(wikipedia_database, page_titles)
 
 print(page_ids)
