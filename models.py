@@ -87,19 +87,7 @@ class TweetsKMeansSKLib:
 
     def run_k_means(self, max_iter):
         kmeans = KMeans(n_clusters=self.k, init='k-means++', n_init=10, max_iter=max_iter).fit(self.data)
-        centroids = kmeans.cluster_centers_
-        centroids_text = []
-        centroids_processed_text = []
-        centroids_features = []
-
-        for c in centroids:
-            for i in range(len(self.tweets_words)):
-                if np.array_equal(self.data[i], c):
-                    centroids_text.append(self.tweets_words[i])
-                    centroids_processed_text.append(self.processed_tweets[i])
-                    centroids_features.append(self.data[i])
-                    break
-        return centroids_text, centroids_processed_text, centroids_features, group_tweets2(self.tweets, self.tweets_words, kmeans.labels_, self.k, self.data)
+        return kmeans.cluster_centers_, group_tweets2(self.tweets, self.tweets_words, kmeans.labels_, self.k, self.data)
 
 
 class TweetsKMeans2:
